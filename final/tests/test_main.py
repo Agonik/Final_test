@@ -1,27 +1,7 @@
-import time
+mport time
 import pytest
 from config import *
 from pages.main_page import MainPage
-
-
-def test_valid_my_lab(testing_driver):
-    """ Авторизация пользователя c валидными данными """
-    page = MainPage(testing_driver)
-    page.btn_my_lab.click()
-    time.sleep(2)
-    page.fild_email.click()
-    page.fild_email.send_keys(valid_email)
-    page.btn_enter.click()
-    time.sleep(2)
-    page.email_pod.find()
-    my_email = page.email_pod.get_attribute('value')
-
-    assert my_email == valid_email
-
-    page.input_code_email.click()
-    page.input_code_email.send_keys(email_code_enter)
-    page.button_assert_and_enter.click()
-
 
 def test_auth_no_valid_code(testing_driver):
     """ Авторизация пользователя c не валидным кодом скидки """
@@ -43,6 +23,25 @@ def test_auth_no_valid_code(testing_driver):
     message = page.message_no_code.find()
     print(message.text)
     assert message.text == "Введенного кода не существует"
+
+
+def test_valid_my_lab(testing_driver):
+    """ Авторизация пользователя c валидными данными """
+    page = MainPage(testing_driver)
+    page.btn_my_lab.click()
+    time.sleep(2)
+    page.fild_email.click()
+    page.fild_email.send_keys(valid_email)
+    page.btn_enter.click()
+    time.sleep(2)
+    page.email_pod.find()
+    my_email = page.email_pod.get_attribute('value')
+
+    assert my_email == valid_email
+
+    page.input_code_email.click()
+    page.input_code_email.send_keys(email_code_enter)
+    page.button_assert_and_enter.click()
 
 
 def test_add_book_defer(testing_driver):
@@ -81,6 +80,7 @@ def test_add_book_defer(testing_driver):
 
     assert title_book_pending == title_book_pending, "Книга не добавлена в отложено"
 
+
 def test_search(testing_driver):
         """Проверка поиска книг автора "Достоевский" """
         page_one = MainPage(testing_driver)
@@ -92,6 +92,8 @@ def test_search(testing_driver):
         for title in page_one.products_titles.get_text():
             msg = 'Wrong product in search "{}"'.format(title)
             assert 'достоевский' in title.lower(), msg
+
+
 
 def test_check_wrong_input_in_search(testing_driver):
         """ Проверка, что ввод с неправильной раскладки клавиатуры работает нормально. """
@@ -110,6 +112,8 @@ def test_check_wrong_input_in_search(testing_driver):
             msg = 'Wrong product in search "{}"'.format(title)
             assert 'достоевский' in title.lower(), msg
 
+
+
 def test_check_input_numbers_in_search(testing_driver):
         """ Проверка, что при вводе цифр поиск работает нормально. """
 
@@ -126,6 +130,9 @@ def test_check_input_numbers_in_search(testing_driver):
         for title in page_one.products_titles.get_text():
             msg = 'Wrong product in search "{}"'.format(title)
             assert '123' in title.lower(), msg
+
+
+
 
 def test_filter_presence(testing_driver):
         """ Проверка кнопки фильтра "В наличии """
